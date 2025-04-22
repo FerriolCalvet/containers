@@ -14,6 +14,11 @@ RUN apt-get update -y && \
     libxml2-dev \
     zlib1g-dev \
     slurm-wlm \
+    libhts-dev \
+    libbz2-dev \
+    liblzma-dev \
+    libncurses-dev \
+    libreadline-dev \
     git && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -41,7 +46,9 @@ RUN Rscript -e 'install.packages(pkgs = "ggplot2");library("ggplot2")'
 RUN Rscript -e 'install.packages(pkgs = "lsa");library("lsa")'
 RUN Rscript -e 'BiocManager::install("RColorBrewer");library("RColorBrewer")'
 RUN Rscript -e 'BiocManager::install("Metrics");library("Metrics")'
-RUN Rscript -e 'BiocManager::install("deconstructSigs");library("deconstructSigs")'
+RUN Rscript -e 'BiocManager::install("BSgenome");library("BSgenome")'
+RUN Rscript -e 'BiocManager::install("BSgenome.Hsapiens.UCSC.hg19");library("BSgenome.Hsapiens.UCSC.hg19")'
+RUN Rscript -e 'install.packages(pkgs = "deconstructSigs");library("deconstructSigs")'
 
 ENV PATH="/app/HDP_sigExtraction/R:$PATH"
 
@@ -52,7 +59,7 @@ ENV PATH="/app/HDP_sigExtraction/R:$PATH"
 #     libbz2-dev \
 #     liblzma-dev \
 #     libncurses-dev \
-#     libhts-dev \
+#      \
 #     libreadline-dev \
 #     && \
 #     apt-get clean && rm -rf /var/lib/apt/lists/*
