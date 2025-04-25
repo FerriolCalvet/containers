@@ -32,6 +32,9 @@ RUN Rscript -e 'devtools::install_github("nicolaroberts/hdp", build_vignettes = 
 
 
 RUN git clone https://github.com/McGranahanLab/HDP_sigExtraction.git /app/HDP_sigExtraction
+RUN sed -i '/Sys.getenv("SLURM_ARRAY_TASK_ID")/c\
+if (length(cmdArgs) >= 10 && cmdArgs[10] != "") {\n  iter <- as.numeric(cmdArgs[10])\n} else {\n  iter <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))\n}' /app/HDP_sigExtraction/R/run_HDP_chainSampling.R
+
 
 RUN rm -r /app/HDP_sigExtraction/HDP_wrapper.sh /app/HDP_sigExtraction/data /app/HDP_sigExtraction/examples
 
@@ -49,6 +52,10 @@ RUN Rscript -e 'BiocManager::install("Metrics");library("Metrics")'
 RUN Rscript -e 'BiocManager::install("BSgenome");library("BSgenome")'
 RUN Rscript -e 'BiocManager::install("BSgenome.Hsapiens.UCSC.hg19");library("BSgenome.Hsapiens.UCSC.hg19")'
 RUN Rscript -e 'install.packages(pkgs = "deconstructSigs");library("deconstructSigs")'
+RUN Rscript -e 'install.packages(pkgs = "dplyr");library("dplyr")'
+RUN Rscript -e 'install.packages(pkgs = "cowplot");library("cowplot")'
+RUN Rscript -e 'install.packages(pkgs = "gridExtra");library("gridExtra")'
+
 
 ENV PATH="/app/HDP_sigExtraction/R:$PATH"
 
